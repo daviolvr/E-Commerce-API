@@ -10,7 +10,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 
 
 @extend_schema(
-    summary="Operações relacionadas aos usuários",
+    summary="Operações relacionadas aos usuários"
 )
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
@@ -21,7 +21,7 @@ class UserViewSet(viewsets.ModelViewSet):
 
 
 @extend_schema(
-    summary="Operações relacionadas aos produtos",
+    summary="Operações relacionadas aos produtos"
 )
 class ProductViewSet(viewsets.ModelViewSet):
     queryset = Product.objects.all()
@@ -32,7 +32,7 @@ class ProductViewSet(viewsets.ModelViewSet):
 
 
 @extend_schema(
-    summary="Operações relacionadas as categorias",
+    summary="Operações relacionadas as categorias"
 )
 class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()
@@ -41,8 +41,10 @@ class CategoryViewSet(viewsets.ModelViewSet):
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['name']
     
-
-class OrderViewSet(viewsets.ViewSet):
+@extend_schema(
+    summary="Operações relacionadas aos pedidos"
+)
+class OrderViewSet(viewsets.ModelViewSet):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
     http_method_names = ['get', 'post', 'delete']
@@ -50,7 +52,10 @@ class OrderViewSet(viewsets.ViewSet):
     filterset_fields = ['user', 'status', 'payment_status']
     
 
-class OrderItemViewSet(viewsets.ViewSet):
+@extend_schema(
+    summary="Operações relacionadas aos OrderItem"
+)
+class OrderItemViewSet(viewsets.ModelViewSet):
     queryset = OrderItem.objects.all()
     serializer_class = OrderItemSerializer
     http_method_names = ['get', 'post', 'delete']
@@ -58,7 +63,10 @@ class OrderItemViewSet(viewsets.ViewSet):
     filterset_fields = ['order', 'product']
 
 
-class ReviewViewSet(viewsets.ViewSet):
+@extend_schema(
+    summary="Operações relacionadas às avaliações"
+)
+class ReviewViewSet(viewsets.ModelViewSet):
     queryset = Review.objects.all()
     serializer_class = ReviewSerializer
     http_method_names = ['get', 'post', 'delete']

@@ -1,4 +1,5 @@
 from django.urls import path
+from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView, SpectacularRedocView
 from .views import UserViewSet, ProductViewSet, CategoryViewSet, OrderViewSet, OrderItemViewSet, ReviewViewSet
 
 urlpatterns = [
@@ -39,4 +40,9 @@ urlpatterns = [
     path("reviews/<int:user_id>/", ReviewViewSet.as_view({'get': 'retrieve'})), # GET tambem, mas pra obter o conjunto de reviews de um determinado usuario
     path("reviews/<int:product_id>/", ReviewViewSet.as_view({'get': 'retrieve'})), # GET tambem, mas pra obter o conjunto de reviews de um determinado produto
     path("reviews/<int:pk>/delete/", ReviewViewSet.as_view({'delete': 'destroy'})), # DELETE
+
+    # Swagger
+    path("schema/", SpectacularAPIView.as_view(), name='schema'), # Gera o schema OpenAPI em YAML/JSON
+    path("docs/", SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'), # Swagger UI
+    path("redoc/", SpectacularRedocView.as_view(url_name='schema'), name='redoc'), # Redoc
 ]

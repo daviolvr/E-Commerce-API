@@ -30,15 +30,15 @@ urlpatterns = [
     # OrderItem
     path("order-item/create/", OrderItemViewSet.as_view({'post': 'create'})), # POST
     path("order-item/<int:pk>/", OrderItemViewSet.as_view({'get': 'retrieve'})), # GET
-    path("order-item/<int:product_id>/", OrderItemViewSet.as_view({'get': 'retrieve'})), # GET tambem, mas pra obter o conjunto de pedidos que possuem determinado produto
+    path("order-item/product/<int:product_id>/", OrderItemViewSet.as_view({'get': 'retrieve'})), # GET tambem, mas pra obter o conjunto de pedidos que possuem determinado produto
     path("order-item/", OrderItemViewSet.as_view({'get': 'list'})), # GET tambem, para listar todos os pedidos e itens relacionados
     path("order-item/<int:pk>/delete/", OrderItemViewSet.as_view({'delete': 'destroy'})), # DELETE
 
     # Review
     path("reviews/create/", ReviewViewSet.as_view({'post': 'create'})), # POST
     path("reviews/<int:pk>/", ReviewViewSet.as_view({'get': 'retrieve'})), # GET
-    path("reviews/<int:user_id>/", ReviewViewSet.as_view({'get': 'retrieve'})), # GET tambem, mas pra obter o conjunto de reviews de um determinado usuario
-    path("reviews/<int:product_id>/", ReviewViewSet.as_view({'get': 'retrieve'})), # GET tambem, mas pra obter o conjunto de reviews de um determinado produto
+    path("reviews/user/<int:user_id>/", ReviewViewSet.as_view({'get': 'retrieve'})), # GET tambem, mas pra obter o conjunto de reviews de um determinado usuario
+    path("reviews/product/<int:product_id>/", ReviewViewSet.as_view({'get': 'retrieve'})), # GET tambem, mas pra obter o conjunto de reviews de um determinado produto
     path("reviews/<int:pk>/delete/", ReviewViewSet.as_view({'delete': 'destroy'})), # DELETE
 
     # Swagger

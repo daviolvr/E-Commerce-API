@@ -90,7 +90,7 @@ class Review(models.Model):
         choices=RATING_CHOICES,
         validators=[MinValueValidator(1), MaxValueValidator(5)] 
     )
-    review_text = TextField()
+    review_text = TextField(null=True)
     created_at = DateTimeField(auto_now_add=True)
 
     class Meta:

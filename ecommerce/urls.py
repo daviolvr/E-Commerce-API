@@ -6,32 +6,32 @@ urlpatterns = [
     # User
     path("users/register/", UserViewSet.as_view({'post': 'create'})), # POST
     path("users/<int:pk>/", UserViewSet.as_view({'get': 'retrieve', 'put': 'update', 'patch': 'partial_update'})), # GET, PUT, PATCH
-    path("users/all/", UserViewSet.as_view({'get': 'list'})), # GET tambem, para listar todos os usuarios
+    path("users/", UserViewSet.as_view({'get': 'list'})), # GET tambem, para listar todos os usuarios
     path("users/<int:pk>/delete/", UserViewSet.as_view({'delete': 'destroy'})), # DELETE
 
     # Products
     path("products/register/", ProductViewSet.as_view({'post': 'create'})), # POST
     path("products/<int:pk>/", ProductViewSet.as_view({'get': 'retrieve', 'put': 'update', 'patch': 'partial_update'})), # GET, PUT, PATCH
-    path("products/all/", ProductViewSet.as_view({'get': 'list'})), # GET tambem, para listar todos os produtos
+    path("products/", ProductViewSet.as_view({'get': 'list'})), # GET tambem, para listar todos os produtos
     path("products/<int:pk>/delete/", ProductViewSet.as_view({'delete': 'destroy'})), # DELETE
 
     # Category
     path("categories/register/", CategoryViewSet.as_view({'post': 'create'})), # POST
     path("categories/<int:pk>/", CategoryViewSet.as_view({'get': 'retrieve', 'put': 'update', 'patch': 'partial_update'})), # GET, PUT, PATCH
-    path("categories/all/", CategoryViewSet.as_view({'get': 'list'})), # GET tambem, para listar todas as categorias
+    path("categories/", CategoryViewSet.as_view({'get': 'list'})), # GET tambem, para listar todas as categorias
     path("categories/<int:pk>/delete/", CategoryViewSet.as_view({'delete': 'destroy'})), # DELETE
 
     # Order
     path("orders/create/", OrderViewSet.as_view({'post': 'create'})), # POST
     path("orders/<int:pk>/", OrderViewSet.as_view({'get': 'retrieve'})), # GET, por enquanto pedidos nao poderao ser alterados
-    path("orders/all/", OrderViewSet.as_view({'get': 'list'})), # GET tambem, para listar todos os pedidos
+    path("orders/", OrderViewSet.as_view({'get': 'list'})), # GET tambem, para listar todos os pedidos
     path("orders/<int:pk>/delete/", OrderViewSet.as_view({'delete': 'destroy'})), # DELETE
 
     # OrderItem
     path("order-item/create/", OrderItemViewSet.as_view({'post': 'create'})), # POST
     path("order-item/<int:pk>/", OrderItemViewSet.as_view({'get': 'retrieve'})), # GET
     path("order-item/<int:product_id>/", OrderItemViewSet.as_view({'get': 'retrieve'})), # GET tambem, mas pra obter o conjunto de pedidos que possuem determinado produto
-    path("order-item/all/", OrderItemViewSet.as_view({'get': 'list'})), # GET tambem, para listar todos os pedidos e itens relacionados
+    path("order-item/", OrderItemViewSet.as_view({'get': 'list'})), # GET tambem, para listar todos os pedidos e itens relacionados
     path("order-item/<int:pk>/delete/", OrderItemViewSet.as_view({'delete': 'destroy'})), # DELETE
 
     # Review

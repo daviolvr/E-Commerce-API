@@ -1,5 +1,5 @@
 from django.db import models
-from django.db.models import (CharField, PositiveSmallIntegerField, DateTimeField, 
+from django.db.models import (CharField, PositiveSmallIntegerField, DateTimeField, BooleanField,
                               TextField, DecimalField, PositiveIntegerField, ForeignKey)
 from django.conf import settings
 from django.core.validators import MinValueValidator, MaxValueValidator
@@ -10,6 +10,7 @@ class Product(models.Model):
     description = TextField(null=False)
     price = DecimalField(max_digits=10, decimal_places=2)
     stock = PositiveIntegerField(default=0)
+    in_stock = BooleanField(default=True)
     category = ForeignKey('Category', on_delete=models.SET_NULL, null=True)
     created_at = DateTimeField(auto_now_add=True)
     updated_at = DateTimeField(auto_now=True)

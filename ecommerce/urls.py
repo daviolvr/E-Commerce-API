@@ -1,41 +1,42 @@
 from django.urls import path
+from .views import UserViewSet, ProductViewSet, CategoryViewSet, OrderViewSet, OrderItemViewSet, ReviewViewSet
 
 urlpatterns = [
     # User
-    path("users/register/", ), # POST
-    path("users/<int:pk>/", ), # GET, PUT
-    path("users/all/", ), # GET tambem, para listar todos os usuarios
-    path("users/<int:pk>/delete/", ), # DELETE
+    path("users/register/", UserViewSet.as_view({'post': 'create'})), # POST
+    path("users/<int:pk>/", UserViewSet.as_view({'get': 'retrieve', 'put': 'update', 'patch': 'partial_update'})), # GET, PUT, PATCH
+    path("users/all/", UserViewSet.as_view({'get': 'list'})), # GET tambem, para listar todos os usuarios
+    path("users/<int:pk>/delete/", UserViewSet.as_view({'delete': 'destroy'})), # DELETE
 
     # Products
-    path("products/register/", ), # POST
-    path("products/<int:pk>/", ), # GET, PUT
-    path("products/all/", ), # GET tambem, para listar todos os produtos
-    path("products/<int:pk>/delete/", ), # DELETE
+    path("products/register/", ProductViewSet.as_view({'post': 'create'})), # POST
+    path("products/<int:pk>/", ProductViewSet.as_view({'get': 'retrieve', 'put': 'update', 'patch': 'partial_update'})), # GET, PUT, PATCH
+    path("products/all/", ProductViewSet.as_view({'get': 'list'})), # GET tambem, para listar todos os produtos
+    path("products/<int:pk>/delete/", ProductViewSet.as_view({'delete': 'destroy'})), # DELETE
 
     # Category
-    path("categories/register/", ), # POST
-    path("categories/<int:pk>/", ), # GET, PUT
-    path("categories/all", ), # GET tambem, para listar todas as categorias
-    path("categories/<int:pk>/delete/", ), # DELETE
+    path("categories/register/", CategoryViewSet.as_view({'post': 'create'})), # POST
+    path("categories/<int:pk>/", CategoryViewSet.as_view({'get': 'retrieve', 'put': 'update', 'patch': 'partial_update'})), # GET, PUT, PATCH
+    path("categories/all/", CategoryViewSet.as_view({'get': 'list'})), # GET tambem, para listar todas as categorias
+    path("categories/<int:pk>/delete/", CategoryViewSet.as_view({'delete': 'destroy'})), # DELETE
 
     # Order
-    path("orders/create/", ), # POST
-    path("orders/<int:pk>/", ), # GET, por enquanto pedidos nao poderao ser alterados
-    path("orders/all", ), # GET tambem, para listar todos os pedidos
-    path("orders/<int:pk>/delete/", ), # DELETE
+    path("orders/create/", OrderViewSet.as_view({'post': 'create'})), # POST
+    path("orders/<int:pk>/", OrderViewSet.as_view({'get': 'retrieve'})), # GET, por enquanto pedidos nao poderao ser alterados
+    path("orders/all/", OrderViewSet.as_view({'get': 'list'})), # GET tambem, para listar todos os pedidos
+    path("orders/<int:pk>/delete/", OrderViewSet.as_view({'delete': 'destroy'})), # DELETE
 
     # OrderItem
-    path("order-item/create/", ), # POST
-    path("order-item/<int:pk>/", ), # GET
-    path("order-item/<int:product_id>/", ), # GET tambem, mas pra obter o conjunto de pedidos que possuem determinado produto
-    path("order-item/all/", ), # GET tambem, para listar todos os pedidos e itens relacionados
-    path("order-item/<int:pk>/", ), # DELETE
+    path("order-item/create/", OrderItemViewSet.as_view({'post': 'create'})), # POST
+    path("order-item/<int:pk>/", OrderItemViewSet.as_view({'get': 'retrieve'})), # GET
+    path("order-item/<int:product_id>/", OrderItemViewSet.as_view({'get': 'retrieve'})), # GET tambem, mas pra obter o conjunto de pedidos que possuem determinado produto
+    path("order-item/all/", OrderItemViewSet.as_view({'get': 'list'})), # GET tambem, para listar todos os pedidos e itens relacionados
+    path("order-item/<int:pk>/delete/", OrderItemViewSet.as_view({'delete': 'destroy'})), # DELETE
 
     # Review
-    path("reviews/create/", ), # POST
-    path("reviews/<int:pk>/", ), # GET
-    path("reviews/<int:user_id/", ), # GET tambem, mas pra obter o conjunto de reviews de um determinado usuario
-    path("reviews/<int:product_id>/", ), # GET tambem, mas pra obter o conjunto de reviews de um determinado produto
-    path("reviews/<int:pk>/delete/", ), # DELETE
+    path("reviews/create/", ReviewViewSet.as_view({'post': 'create'})), # POST
+    path("reviews/<int:pk>/", ReviewViewSet.as_view({'get': 'retrieve'})), # GET
+    path("reviews/<int:user_id>/", ReviewViewSet.as_view({'get': 'retrieve'})), # GET tambem, mas pra obter o conjunto de reviews de um determinado usuario
+    path("reviews/<int:product_id>/", ReviewViewSet.as_view({'get': 'retrieve'})), # GET tambem, mas pra obter o conjunto de reviews de um determinado produto
+    path("reviews/<int:pk>/delete/", ReviewViewSet.as_view({'delete': 'destroy'})), # DELETE
 ]

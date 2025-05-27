@@ -7,6 +7,7 @@ from .models import Product, Category, Order, OrderItem, Review
 from .serializers import UserSerializer, ProductSerializer, CategorySerializer, OrderSerializer, OrderItemSerializer, ReviewSerializer
 from drf_spectacular.utils import extend_schema
 from django_filters.rest_framework import DjangoFilterBackend
+from .filters import UserFilter, ProductFilter, CategoryFilter, OrderFilter, OrderItemFilter, ReviewFilter
 
 
 @extend_schema(
@@ -17,7 +18,7 @@ class UserViewSet(viewsets.ModelViewSet):
     serializer_class = UserSerializer
     http_method_names = ['get', 'post', 'put', 'patch', 'delete']
     filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['username', 'email']
+    filterset_class = UserFilter
 
 
 @extend_schema(
@@ -28,7 +29,7 @@ class ProductViewSet(viewsets.ModelViewSet):
     serializer_class = ProductSerializer
     http_method_names = ['get', 'post', 'put', 'patch', 'delete']
     filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['category', 'name', 'in_stock']
+    filterset_class = ProductFilter
 
 
 @extend_schema(
@@ -39,7 +40,7 @@ class CategoryViewSet(viewsets.ModelViewSet):
     serializer_class = CategorySerializer
     http_method_names = ['get', 'post', 'put', 'patch', 'delete']
     filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['name']
+    filterset_class = CategoryFilter
     
 @extend_schema(
     summary="Operações relacionadas aos pedidos"
@@ -49,7 +50,7 @@ class OrderViewSet(viewsets.ModelViewSet):
     serializer_class = OrderSerializer
     http_method_names = ['get', 'post', 'delete']
     filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['user', 'status', 'payment_status']
+    filterset_class = OrderFilter
     
 
 @extend_schema(
@@ -60,7 +61,7 @@ class OrderItemViewSet(viewsets.ModelViewSet):
     serializer_class = OrderItemSerializer
     http_method_names = ['get', 'post', 'delete']
     filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['order', 'product']
+    filterset_class = OrderItemFilter
 
 
 @extend_schema(
@@ -71,4 +72,4 @@ class ReviewViewSet(viewsets.ModelViewSet):
     serializer_class = ReviewSerializer
     http_method_names = ['get', 'post', 'delete']
     filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['product', 'user', 'rating']
+    filterset_class = ReviewFilter

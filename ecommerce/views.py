@@ -8,6 +8,8 @@ from .serializers import UserSerializer, ProductSerializer, CategorySerializer, 
 from drf_spectacular.utils import extend_schema
 from django_filters.rest_framework import DjangoFilterBackend
 from .filters import UserFilter, ProductFilter, CategoryFilter, OrderFilter, OrderItemFilter, ReviewFilter
+from rest_framework.permissions import IsAdminUser
+from .permissions import IsAdminOrReadOnly
 
 
 @extend_schema(
@@ -19,6 +21,7 @@ class UserViewSet(viewsets.ModelViewSet):
     http_method_names = ['get', 'post', 'put', 'patch', 'delete']
     filter_backends = [DjangoFilterBackend]
     filterset_class = UserFilter
+    permission_classes = [IsAdminUser]
 
 
 @extend_schema(
@@ -30,6 +33,7 @@ class ProductViewSet(viewsets.ModelViewSet):
     http_method_names = ['get', 'post', 'put', 'patch', 'delete']
     filter_backends = [DjangoFilterBackend]
     filterset_class = ProductFilter
+    permission_classes = [IsAdminUser]
 
 
 @extend_schema(
@@ -41,6 +45,7 @@ class CategoryViewSet(viewsets.ModelViewSet):
     http_method_names = ['get', 'post', 'put', 'patch', 'delete']
     filter_backends = [DjangoFilterBackend]
     filterset_class = CategoryFilter
+    permission_classes = [IsAdminUser]
     
 @extend_schema(
     summary="Operações relacionadas aos pedidos"
@@ -51,6 +56,7 @@ class OrderViewSet(viewsets.ModelViewSet):
     http_method_names = ['get', 'post', 'delete']
     filter_backends = [DjangoFilterBackend]
     filterset_class = OrderFilter
+    permission_classes = [IsAdminUser]
     
 
 @extend_schema(
@@ -62,7 +68,8 @@ class OrderItemViewSet(viewsets.ModelViewSet):
     http_method_names = ['get', 'post', 'delete']
     filter_backends = [DjangoFilterBackend]
     filterset_class = OrderItemFilter
-
+    permission_classes = [IsAdminUser]
+    
 
 @extend_schema(
     summary="Operações relacionadas às avaliações"
@@ -73,3 +80,4 @@ class ReviewViewSet(viewsets.ModelViewSet):
     http_method_names = ['get', 'post', 'delete']
     filter_backends = [DjangoFilterBackend]
     filterset_class = ReviewFilter
+    permission_classes = [IsAdminUser]

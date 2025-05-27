@@ -1,6 +1,7 @@
 from django.urls import path
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView, SpectacularRedocView
 from .views import UserViewSet, ProductViewSet, CategoryViewSet, OrderViewSet, OrderItemViewSet, ReviewViewSet
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 urlpatterns = [
     # User
@@ -45,4 +46,8 @@ urlpatterns = [
     path("schema/", SpectacularAPIView.as_view(), name='schema'), # Gera o schema OpenAPI em YAML/JSON
     path("docs/", SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'), # Swagger UI
     path("redoc/", SpectacularRedocView.as_view(url_name='schema'), name='redoc'), # Redoc
+
+    # JWT
+    path("token/", TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path("token/refresh/", TokenRefreshView.as_view(), name='token_refresh'),
 ]

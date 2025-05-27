@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 from pathlib import Path
 import os
 from dotenv import load_dotenv
+from datetime import timedelta
 
 load_dotenv()
 
@@ -44,6 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'drf_spectacular',
+    'rest_framework_simplejwt',
     'ecommerce',
 ]
 
@@ -142,6 +144,9 @@ PASSWORD_HASHERS = [
 REST_FRAMEWORK = {
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
     'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
 }
 
 
@@ -153,4 +158,9 @@ SPECTACULAR_SETTINGS = {
         "name": os.environ.get("NAME"),
         "email": os.environ.get("EMAIL"),
     },
+}
+
+SIMPLEJWT = {
+    "ACESS_TOKEN_LIFETIME": timedelta(minutes=10),
+    # "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
 }

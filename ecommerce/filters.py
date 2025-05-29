@@ -1,6 +1,6 @@
 from django_filters import FilterSet, CharFilter, BooleanFilter, NumberFilter
 from django.contrib.auth.models import User
-from .models import Product, Category, Order, OrderItem, Review
+from .models import Product, Category, Order, OrderProduct, Review, ProductCategory
 
 
 class UserFilter(FilterSet):
@@ -40,12 +40,12 @@ class OrderFilter(FilterSet):
         fields = ['user', 'status', 'payment_status']
 
 
-class OrderItemFilter(FilterSet):
+class OrderProductFilter(FilterSet):
     order = NumberFilter(field_name='order')
     product = NumberFilter(field_name='product')
 
     class Meta:
-        model = OrderItem
+        model = OrderProduct
         fields = ['order', 'product']
 
 
@@ -59,3 +59,12 @@ class ReviewFilter(FilterSet):
     class Meta:
         model = Review
         fields = ['product', 'user', 'rating', 'min_rating', 'max_rating']
+
+
+class ProductCategoryFilter(FilterSet):
+    product = NumberFilter(field_name='product')
+    category = NumberFilter(field_name='category')
+
+    class Meta:
+        model = ProductCategory
+        fields = ['product', 'category']

@@ -3,11 +3,13 @@ from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.models import User
 from rest_framework import viewsets
-from .models import Product, Category, Order, OrderItem, Review
-from .serializers import UserSerializer, ProductSerializer, CategorySerializer, OrderSerializer, OrderItemSerializer, ReviewSerializer
+from .models import Product, Category, Order, OrderProduct, Review, ProductCategory
+from .serializers import (UserSerializer, ProductSerializer, CategorySerializer, OrderSerializer, 
+                          OrderProductSerializer, ReviewSerializer, ProductCategorySerializer)
 from drf_spectacular.utils import extend_schema
 from django_filters.rest_framework import DjangoFilterBackend
-from .filters import UserFilter, ProductFilter, CategoryFilter, OrderFilter, OrderItemFilter, ReviewFilter
+from .filters import (UserFilter, ProductFilter, CategoryFilter, OrderFilter, 
+                      OrderProductFilter, ReviewFilter, ProductCategoryFilter)
 from rest_framework.permissions import IsAdminUser
 from .permissions import IsAdminOrReadOnly
 
@@ -60,14 +62,14 @@ class OrderViewSet(viewsets.ModelViewSet):
     
 
 @extend_schema(
-    summary="Operações relacionadas aos OrderItem"
+    summary="Operações relacionadas aos OrderProduct"
 )
-class OrderItemViewSet(viewsets.ModelViewSet):
-    queryset = OrderItem.objects.all()
-    serializer_class = OrderItemSerializer
+class OrderProductViewSet(viewsets.ModelViewSet):
+    queryset = OrderProduct.objects.all()
+    serializer_class = OrderProductSerializer
     http_method_names = ['get', 'post', 'delete']
     filter_backends = [DjangoFilterBackend]
-    filterset_class = OrderItemFilter
+    filterset_class = OrderProductFilter
     permission_classes = [IsAdminUser]
     
 
@@ -80,4 +82,16 @@ class ReviewViewSet(viewsets.ModelViewSet):
     http_method_names = ['get', 'post', 'delete']
     filter_backends = [DjangoFilterBackend]
     filterset_class = ReviewFilter
+    permission_classes = [IsAdminUser]
+
+
+@extend_schema(
+    summary="Operações relacionadas aos ProductCategory"
+)
+class ProductCategoryViewSet(viewsets.ModelViewSet):
+    queryset = ProductCategory.objects.all()
+    serializer_class = ProductCategorySerializer
+    http_method_names = ['get', 'post', 'put', 'patch', 'delete']
+    filter_backends = [DjangoFilterBackend]
+    filterset_class = ProductCategoryFilter
     permission_classes = [IsAdminUser]

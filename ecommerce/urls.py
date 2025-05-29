@@ -1,6 +1,6 @@
 from django.urls import path
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView, SpectacularRedocView
-from .views import UserViewSet, ProductViewSet, CategoryViewSet, OrderViewSet, OrderItemViewSet, ReviewViewSet
+from .views import UserViewSet, ProductViewSet, CategoryViewSet, OrderViewSet, OrderProductViewSet, ReviewViewSet, ProductCategoryViewSet
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 urlpatterns = [
@@ -28,12 +28,12 @@ urlpatterns = [
     path("orders/", OrderViewSet.as_view({'get': 'list'})), # GET tambem, para listar todos os pedidos
     path("orders/<int:pk>/delete/", OrderViewSet.as_view({'delete': 'destroy'})), # DELETE
 
-    # OrderItem
-    path("order-item/create/", OrderItemViewSet.as_view({'post': 'create'})), # POST
-    path("order-item/<int:pk>/", OrderItemViewSet.as_view({'get': 'retrieve'})), # GET
-    path("order-item/product/<int:product_id>/", OrderItemViewSet.as_view({'get': 'retrieve'})), # GET tambem, mas pra obter o conjunto de pedidos que possuem determinado produto
-    path("order-item/", OrderItemViewSet.as_view({'get': 'list'})), # GET tambem, para listar todos os pedidos e itens relacionados
-    path("order-item/<int:pk>/delete/", OrderItemViewSet.as_view({'delete': 'destroy'})), # DELETE
+    # OrderProduct
+    path("order-product/create/", OrderProductViewSet.as_view({'post': 'create'})), # POST
+    path("order-product/<int:pk>/", OrderProductViewSet.as_view({'get': 'retrieve'})), # GET
+    path("order-product/product/<int:product_id>/", OrderProductViewSet.as_view({'get': 'retrieve'})), # GET tambem, mas pra obter o conjunto de pedidos que possuem determinado produto
+    path("order-product/", OrderProductViewSet.as_view({'get': 'list'})), # GET tambem, para listar todos os pedidos e itens relacionados
+    path("order-product/<int:pk>/delete/", OrderProductViewSet.as_view({'delete': 'destroy'})), # DELETE
 
     # Review
     path("reviews/create/", ReviewViewSet.as_view({'post': 'create'})), # POST
@@ -41,6 +41,12 @@ urlpatterns = [
     path("reviews/user/<int:user_id>/", ReviewViewSet.as_view({'get': 'retrieve'})), # GET tambem, mas pra obter o conjunto de reviews de um determinado usuario
     path("reviews/product/<int:product_id>/", ReviewViewSet.as_view({'get': 'retrieve'})), # GET tambem, mas pra obter o conjunto de reviews de um determinado produto
     path("reviews/<int:pk>/delete/", ReviewViewSet.as_view({'delete': 'destroy'})), # DELETE
+
+    # ProductCategory
+    path("product-category/create/", ProductCategoryViewSet.as_view({'post': 'create'})), # POST
+    path("product-category/<int:pk>/", ProductCategoryViewSet.as_view({'get': 'retrieve'})),
+    path("product-category/", ProductCategoryViewSet.as_view({'get': 'list'})),
+    path("product-category/delete/", ProductCategoryViewSet.as_view({'delete': 'destroy'})),
 
     # Swagger
     path("schema/", SpectacularAPIView.as_view(), name='schema'), # Gera o schema OpenAPI em YAML/JSON

@@ -61,7 +61,7 @@ class Order(models.Model):
         return f"Order #{self.id} - {self.get_status_display()}"
 
 
-class OrderItem(models.Model):
+class OrderProduct(models.Model):
     order = ForeignKey(Order, on_delete=models.CASCADE, related_name='items')
     product = ForeignKey(Product, on_delete=models.CASCADE)
     quantity = PositiveIntegerField(default=1)
@@ -72,7 +72,7 @@ class OrderItem(models.Model):
         return self.quantity * self.price
     
     class Meta:
-        db_table = 'order_item'
+        db_table = 'order_product'
 
 
 class Review(models.Model):
@@ -99,4 +99,16 @@ class Review(models.Model):
 
     def __str__(self):
         return f"{self.user.username} - {self.product.name}"
+    
+
+class ProductCategory(models.Model):
+    product = ForeignKey(Product, on_delete=models.CASCADE)
+    category = ForeignKey(Category, on_delete=models.CASCADE)
+    created_at = DateTimeField(auto_now_add=True)
+    updated_at = DateTimeField(auto_now=True)
+
+    class Meta:
+        unique_together = ['product', 'category']
+        db_table = 'product_category'
+
 

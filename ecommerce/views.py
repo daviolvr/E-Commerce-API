@@ -35,7 +35,7 @@ class ProductViewSet(viewsets.ModelViewSet):
     http_method_names = ['get', 'post', 'put', 'patch', 'delete']
     filter_backends = [DjangoFilterBackend]
     filterset_class = ProductFilter
-    permission_classes = [IsAdminUser]
+    permission_classes = [IsAdminOrReadOnly]
 
 
 @extend_schema(
@@ -47,7 +47,7 @@ class CategoryViewSet(viewsets.ModelViewSet):
     http_method_names = ['get', 'post', 'put', 'patch', 'delete']
     filter_backends = [DjangoFilterBackend]
     filterset_class = CategoryFilter
-    permission_classes = [IsAdminUser]
+    permission_classes = [IsAdminOrReadOnly]
     
 @extend_schema(
     summary="Operações relacionadas aos pedidos"

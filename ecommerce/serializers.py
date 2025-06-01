@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
-from .models import Product, Category, Order, OrderProduct, Review, ProductCategory
+from .models import Product, Category, Order, OrderProduct, Review, Cart, CartProduct, Shipping, Payment
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -39,8 +39,26 @@ class ReviewSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class ProductCategorySerializer(serializers.ModelSerializer):
+class CartSerializer(serializers.ModelSerializer):
     class Meta:
-        model = ProductCategory
+        model = Cart
+        fields = '__all__'
+
+
+class CartProductSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CartProduct
+        fields = '__all__'
+
+
+class ShippingSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Shipping
+        fields = '__all__'
+
+
+class PaymentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Payment
         fields = '__all__'
 

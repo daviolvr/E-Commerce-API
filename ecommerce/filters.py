@@ -1,6 +1,6 @@
 from django_filters import FilterSet, CharFilter, BooleanFilter, NumberFilter
 from django.contrib.auth.models import User
-from .models import Product, Category, Order, OrderProduct, Review, ProductCategory
+from .models import Product, Category, Order, OrderProduct, Review, Cart, CartProduct, Shipping, Payment
 
 
 class UserFilter(FilterSet):
@@ -61,10 +61,35 @@ class ReviewFilter(FilterSet):
         fields = ['product', 'user', 'rating', 'min_rating', 'max_rating']
 
 
-class ProductCategoryFilter(FilterSet):
-    product = NumberFilter(field_name='product')
-    category = NumberFilter(field_name='category')
+class CartFilter(FilterSet):
+    user = NumberFilter(field_name='user')
 
     class Meta:
-        model = ProductCategory
-        fields = ['product', 'category']
+        model = Cart
+        fields = ['user']
+
+
+class CartProductFilter(FilterSet):
+    cart = NumberFilter(field_name='cart')
+    product = NumberFilter(field_name='product')
+
+    class Meta:
+        model = CartProduct
+        fields = ['cart', 'product']
+
+
+class ShippingFilter(FilterSet):
+    order = NumberFilter(field_name='order')
+    address = CharFilter(field_name='address', lookup_expr='icontains')
+    tracking_number = CharFilter(field_name='tracking_number', lookup_expr='iexact')
+    status = CharFilter(field_name='status', lookup_expr='iexact')
+
+    class Meta:
+        model = Shipping
+        fields = ['order', 'address', 'tracking_number', 'status']
+
+
+class PaymentFilter(FilterSet):
+    order = NumberFilter(field_name='order')
+    payment_method = CharFilter(field_name='payment_method', lookup_expr='iexact')
+    status = CharFilter(field_name='status', lookup_expr='iexact')

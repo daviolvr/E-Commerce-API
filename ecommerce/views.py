@@ -14,6 +14,7 @@ from .filters import (UserFilter, ProductFilter, CategoryFilter, OrderFilter,
                       ShippingFilter, PaymentFilter)
 from rest_framework.permissions import IsAdminUser
 from .permissions import IsAdminOrReadOnly
+from .services import generate_tracking_number
 
 
 @extend_schema(
@@ -121,6 +122,10 @@ class ShippingViewSet(viewsets.ModelViewSet):
     filter_backends = [DjangoFilterBackend]
     filterset_class = ShippingFilter
     permission_classes = [IsAdminUser]
+
+    def perform_create(self, serializer):
+        tracking_number = generate_tracking_number()
+        serializer.save(tracking_number=tracking_number)
 
 
 @extend_schema(

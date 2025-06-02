@@ -21,6 +21,8 @@ class Product(models.Model):
 
     class Meta:
         db_table = 'products'
+        verbose_name = 'Product'
+        verbose_name_plural = 'Products'
 
     def __str__(self):
         return self.name
@@ -31,6 +33,7 @@ class Category(models.Model):
     
     class Meta:
         db_table = 'categories'
+        verbose_name = 'Category'
         verbose_name_plural = 'Categories'
 
     def __str__(self):
@@ -54,13 +57,15 @@ class Order(models.Model):
     # Para atualizar automaticamente ao adicionar ou remover produtos 
     def update_total(self):
         total = self.items.aggregate(
-            total=Sum(F('price') * F('quantity'), output_field=FloatField())
+            total=Sum(F('price') * F('quantity'), output_field=DecimalField())
         )['total'] or 0
         self.total = total
         self.save(update_fields=['total'])
 
     class Meta:
         db_table = 'orders'
+        verbose_name = 'Order'
+        verbose_name_plural = 'Orders'
 
     def __str__(self):
         return f"Order #{self.id} - {self.get_status_display()}"
@@ -114,6 +119,10 @@ class OrderProduct(models.Model):
     
     class Meta:
         db_table = 'order_product'
+        verbose_name = 'Order_Product'
+
+    def __str__(self):
+        return f"OrderProduct #{self.id}"
 
 
 class Review(models.Model):
@@ -149,6 +158,11 @@ class Cart(models.Model):
 
     class Meta:
         db_table='cart'
+        verbose_name = 'Cart'
+        verbose_name_plural = 'Carts'
+
+    def __str__(self):
+        return f"{self.user.username} Cart"
 
 
 class CartProduct(models.Model):
@@ -165,6 +179,10 @@ class CartProduct(models.Model):
 
     class Meta:
         db_table='cart_product'
+        verbose_name = 'Cart_Product'
+
+    def __str__(self):
+        return f"CartProduct #{self.id}"
 
 
 class Shipping(models.Model):
@@ -177,7 +195,7 @@ class Shipping(models.Model):
 
     order = OneToOneField(Order, on_delete=models.CASCADE)
     address = TextField()
-    tracking_number = CharField(max_length=100, blank=True, null=True)
+    tracking_number = CharField(max_length=100, unique=True, blank=True, null=True)
     status = CharField(max_length=50, choices=STATUS_CHOICES, default='Pending')
     shipped_at = DateTimeField(blank=True, null=True)
     delivered_at = DateTimeField(blank=True, null=True)
@@ -186,6 +204,11 @@ class Shipping(models.Model):
 
     class Meta:
         db_table = 'shipping'
+        verbose_name = 'Shipping'
+        verbose_name_plural = 'Shippings'
+    
+    def __str__(self):
+        return f"Shipping for Order {self.order.id} - {self.tracking_number or 'No Tracking'}"
 
 
 class Payment(models.Model):
@@ -207,3 +230,8 @@ class Payment(models.Model):
 
     class Meta:
         db_table = 'payment'
+        verbose_name = 'Payment'
+        verbose_name_plural = 'Payments'
+
+    def __str__(self):
+        return self.payment_method

@@ -19,3 +19,5 @@ def generate_transaction_id() -> str:
         transaction_id = str(uuid.uuid4()).replace('-', '')[:12].upper()
         if not Payment.objects.filter(transaction_id=transaction_id).exists():
             return transaction_id
+        
+        

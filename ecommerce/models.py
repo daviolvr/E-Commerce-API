@@ -224,6 +224,7 @@ class Payment(models.Model):
     ]
 
     order = OneToOneField(Order, on_delete=models.CASCADE)
+    transaction_id = CharField(max_length=100, unique=True, blank=True, null=True)
     payment_method = CharField(max_length=20, choices=PAYMENT_CHOICES)
     status = CharField(max_length=20, choices=STATUS_CHOICES)
     paid_at = DateTimeField(blank=True, null=True)

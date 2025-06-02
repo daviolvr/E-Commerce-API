@@ -14,7 +14,7 @@ from .filters import (UserFilter, ProductFilter, CategoryFilter, OrderFilter,
                       ShippingFilter, PaymentFilter)
 from rest_framework.permissions import IsAdminUser
 from .permissions import IsAdminOrReadOnly
-from .services import generate_tracking_number
+from .services import generate_tracking_number, generate_transaction_id
 
 
 @extend_schema(
@@ -138,3 +138,7 @@ class PaymentViewSet(viewsets.ModelViewSet):
     filter_backends = [DjangoFilterBackend]
     filterset_class = PaymentFilter
     permission_classes = [IsAdminUser]
+
+    def perform_create(self, serializer):
+        transaction_id = generate_transaction_id()
+        serializer.save(transaction_id=transaction_id)

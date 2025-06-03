@@ -185,6 +185,34 @@ class CartProduct(models.Model):
         return f"CartProduct #{self.id}"
 
 
+class Address(models.Model):
+    user = ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='addresses')
+    recipient_name = CharField(max_length=100) # Nome do destinatário
+    street = CharField(max_length=255)
+    number = CharField(max_length=10)
+    complement = CharField(max_length=100, blank=True, null=True)
+    city = CharField(max_length=100)
+    state = CharField(max_length=100)
+    country = CharField(max_length=100, default='Brazil')
+    is_default = BooleanField(default=False) # Para indicar se é o endereço principal
+    created_at = DateTimeField(auto_now_add=True)
+    updated_at = DateTimeField(auto_now=True)
+
+    class Meta:
+        db_table = 'addresses'
+        verbose_name = 'Address'
+        verbose_name_plural = 'Addresses'
+
+    def __str__(self):
+        return f"{self.recipient_name}, {self.street}, {self.number}, {self.city} - {self.state}"
+    
+    def save(self, *args, **kwargs):
+        if self.is_default:
+            # Garantir que exista apenas um endereço padrão por usuário
+            Address.objects.filter(user=self.user, is_default=True).exclude(pk=self.pk).update(is_default=False)
+        super().save(*args, **kwargs)
+
+
 class Shipping(models.Model):
     STATUS_CHOICES = [
         ('Pending', 'Pending'),
@@ -194,7 +222,7 @@ class Shipping(models.Model):
     ]
 
     order = OneToOneField(Order, on_delete=models.CASCADE)
-    address = TextField()
+    address = ForeignKey(Address, on_delete=models.PROTECT)
     tracking_number = CharField(max_length=100, unique=True, blank=True, null=True)
     status = CharField(max_length=50, choices=STATUS_CHOICES, default='Pending')
     shipped_at = DateTimeField(blank=True, null=True)
@@ -236,3 +264,6 @@ class Payment(models.Model):
 
     def __str__(self):
         return self.payment_method
+
+
+

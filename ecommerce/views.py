@@ -3,15 +3,15 @@ from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.models import User
 from rest_framework import viewsets
-from .models import Product, Category, Order, OrderProduct, Review, Cart, CartProduct, Shipping, Payment
+from .models import Product, Category, Order, OrderProduct, Review, Cart, CartProduct, Shipping, Payment, Address
 from .serializers import (UserSerializer, ProductSerializer, CategorySerializer, OrderSerializer, 
                           OrderProductSerializer, ReviewSerializer, CartSerializer, CartProductSerializer,
-                          ShippingSerializer, PaymentSerializer)
+                          ShippingSerializer, PaymentSerializer, AddressSerializer)
 from drf_spectacular.utils import extend_schema
 from django_filters.rest_framework import DjangoFilterBackend
 from .filters import (UserFilter, ProductFilter, CategoryFilter, OrderFilter, 
                       OrderProductFilter, ReviewFilter, CartFilter, CartProductFilter,
-                      ShippingFilter, PaymentFilter)
+                      ShippingFilter, PaymentFilter, AddressFilter)
 from rest_framework.permissions import IsAdminUser
 from .permissions import IsAdminOrReadOnly
 from .services import generate_tracking_number, generate_transaction_id
@@ -142,3 +142,15 @@ class PaymentViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         transaction_id = generate_transaction_id()
         serializer.save(transaction_id=transaction_id)
+
+
+@extend_schema(
+    summary="Operações relacionadas ao Address"
+)
+class AddressViewSet(viewsets.ModelViewSet):
+    queryset = Address.objects.all()
+    serializer_class = AddressSerializer
+    http_method_names = ['get', 'post', 'put', 'patch', 'delete']
+    filter_backends = [DjangoFilterBackend]
+    filterset_class = AddressFilter
+    permission_classes = [IsAdminUser]

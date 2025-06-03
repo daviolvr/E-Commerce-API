@@ -99,3 +99,12 @@ class PaymentFilter(FilterSet):
         fields = ['order', 'payment_method', 'status']
 
 
+class AddressFilter(FilterSet):
+    user = NumberFilter(field_name='user')
+    city = CharFilter(field_name='city', lookup_expr='icontains')
+    state = CharFilter(field_name='state', lookup_expr='iexact')
+    country = CharFilter(field_name='country', lookup_expr='icontains')
+
+    class Meta:
+        model = Address
+        fields = ['user', 'city', 'state', 'country']

@@ -54,14 +54,6 @@ class Order(models.Model):
     created_at = DateTimeField(auto_now_add=True)
     updated_at = DateTimeField(auto_now=True)
 
-    # Para atualizar automaticamente ao adicionar ou remover produtos 
-    def update_total(self):
-        total = self.items.aggregate(
-            total=Sum(F('price') * F('quantity'), output_field=DecimalField())
-        )['total'] or 0
-        self.total = total
-        self.save(update_fields=['total'])
-
     class Meta:
         db_table = 'orders'
         verbose_name = 'Order'
@@ -80,35 +72,6 @@ class OrderProduct(models.Model):
     @property
     def subtotal(self):
         return self.quantity * self.price
-    
-    def save(self, *args, **kwargs):
-        if not self.price:
-            self.price = self.product.price # Pra garantir que não cause inconsistência se o preço do produto for alterado depois do pedido ser feito
-    
-        # Caso seja um objeto novo (ainda não salvo no banco)
-        if not self.pk:
-            if self.product.stock >= self.quantity:
-                self.product.stock -= self.quantity
-                self.product.save()
-            else:
-                raise ValueError(f"Insufficient stock for {self.product.name}")
-        else:
-            # Atualização de quantidade existente
-            previous = OrderProduct.objects.get(pk=self.pk)
-            difference = self.quantity - previous.quantity
-
-            if difference > 0:
-                if self.product.stock >= difference:
-                    self.product.stock -= difference
-                    self.product.save()
-                else:
-                    raise ValueError(f"Insufficient stock for {self.product.name}")
-            elif difference < 0:
-                self.product.stock += abs(difference)
-                self.product.save()
-
-        super().save(*args, **kwargs)
-        self.order.update_total()
 
     def delete(self, *args, **kwargs):
         # Quando um OrderProduct é deletado, devolve o estoque

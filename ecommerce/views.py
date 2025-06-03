@@ -14,7 +14,8 @@ from .filters import (UserFilter, ProductFilter, CategoryFilter, OrderFilter,
                       ShippingFilter, PaymentFilter, AddressFilter)
 from rest_framework.permissions import IsAdminUser
 from .permissions import IsAdminOrReadOnly
-from .services import generate_tracking_number, generate_transaction_id
+from .services.payment_service import PaymentService
+from .services.shipping_service import ShippingService
 
 
 @extend_schema(
@@ -124,7 +125,7 @@ class ShippingViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAdminUser]
 
     def perform_create(self, serializer):
-        tracking_number = generate_tracking_number()
+        tracking_number = ShippingService.generate_tracking_number()
         serializer.save(tracking_number=tracking_number)
 
 
@@ -140,7 +141,7 @@ class PaymentViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAdminUser]
 
     def perform_create(self, serializer):
-        transaction_id = generate_transaction_id()
+        transaction_id = PaymentService.generate_transaction_id()
         serializer.save(transaction_id=transaction_id)
 
 

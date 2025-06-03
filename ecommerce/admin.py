@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Product, Category, Order, OrderProduct, Review, Cart, CartProduct, Shipping, Payment
+from .models import Product, Category, Order, OrderProduct, Review, Cart, CartProduct, Shipping, Payment, Address
 
 admin.site.site_header = 'E-Commerce Admin'
 admin.site.register(Product)
@@ -11,3 +11,4 @@ admin.site.register(Cart)
 admin.site.register(CartProduct)
 admin.site.register(Shipping)
 admin.site.register(Payment)
+admin.site.register(Address)

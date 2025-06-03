@@ -1,6 +1,6 @@
 from django_filters import FilterSet, CharFilter, BooleanFilter, NumberFilter
 from django.contrib.auth.models import User
-from .models import Product, Category, Order, OrderProduct, Review, Cart, CartProduct, Shipping, Payment
+from .models import Product, Category, Order, OrderProduct, Review, Cart, CartProduct, Shipping, Payment, Address
 
 
 class UserFilter(FilterSet):
@@ -93,3 +93,9 @@ class PaymentFilter(FilterSet):
     order = NumberFilter(field_name='order')
     payment_method = CharFilter(field_name='payment_method', lookup_expr='iexact')
     status = CharFilter(field_name='status', lookup_expr='iexact')
+
+    class Meta:
+        model = Payment
+        fields = ['order', 'payment_method', 'status']
+
+

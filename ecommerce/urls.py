@@ -3,7 +3,7 @@ from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView, Sp
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from .views import (UserViewSet, ProductViewSet, CategoryViewSet, OrderViewSet, 
                     OrderProductViewSet, ReviewViewSet, CartViewSet, CartProductViewSet,
-                    ShippingViewSet, PaymentViewSet)
+                    ShippingViewSet, PaymentViewSet, AddressViewSet)
 
 urlpatterns = [
     # User
@@ -67,6 +67,12 @@ urlpatterns = [
     path("payments/<int:pk>/", PaymentViewSet.as_view({'get': 'retrieve', 'put': 'update', 'patch': 'partial_update'})),
     path("payments/", PaymentViewSet.as_view({'get': 'list'})),
     path("payments/<int:pk>/delete/", PaymentViewSet.as_view({'delete': 'destroy'})),
+
+    # Address
+    path("addresses/create/", AddressViewSet.as_view({'post': 'create'})),
+    path("addresses/<int:pk>/", AddressViewSet.as_view({'get': 'retrieve', 'put': 'update', 'patch': 'partial_update'})),
+    path("addresses/", AddressViewSet.as_view({'get': 'list'})),
+    path("addresses/<int:pk>/delete/", AddressViewSet.as_view({'delete': 'destroy'})),
 
     # Swagger
     path("schema/", SpectacularAPIView.as_view(), name='schema'), # Gera o schema OpenAPI em YAML/JSON

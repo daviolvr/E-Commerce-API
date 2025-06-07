@@ -67,18 +67,7 @@ class OrderProduct(models.Model):
     order = ForeignKey(Order, on_delete=models.CASCADE, related_name='items')
     product = ForeignKey(Product, on_delete=models.CASCADE)
     quantity = PositiveIntegerField(default=1)
-    price = DecimalField(max_digits=10, decimal_places=2)
-
-    @property
-    def subtotal(self):
-        return self.quantity * self.price
-
-    def delete(self, *args, **kwargs):
-        # Quando um OrderProduct é deletado, devolve o estoque
-        self.product.stock += self.quantity
-        self.product.save()
-        super().delete(*args, **kwargs)
-        self.order.update_total()
+    price = DecimalField(max_digits=10, decimal_places=2, blank=True)
     
     class Meta:
         db_table = 'order_product'

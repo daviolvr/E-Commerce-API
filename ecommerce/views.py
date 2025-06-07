@@ -14,7 +14,7 @@ from rest_framework.permissions import IsAdminUser
 from .permissions import IsAdminOrReadOnly
 from .services.payment_service import PaymentService
 from .services.shipping_service import ShippingService
-from .services.order_service import OrderService
+from .services.orderproduct_service import OrderProductService
 
 
 @extend_schema_view(
@@ -175,10 +175,16 @@ class OrderProductViewSet(viewsets.ModelViewSet):
     filterset_class = OrderProductFilter
     permission_classes = [IsAdminUser]
 
+    def create(self, request, *args, **kwargs):
+        order_product = OrderProductService.create_order_product(request.data)
+        serializer = self.get_serializer(order_product)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+
     def destroy(self, request, *args, **kwargs):
         order_product_id = kwargs.get('pk')
         try:
-            OrderService.remove_order_product(order_product_id)
+            OrderProductService.remove_order_product(order_product_id)
             return Response(status=status.HTTP_204_NO_CONTENT)
         except ValueError as e:
             return Response(

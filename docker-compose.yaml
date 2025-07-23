@@ -1,0 +1,32 @@
+services:
+  ecommerce-environment:
+    container_name: ecommerce-environment
+    env_file:
+      - ./.env.docker
+    build:
+      context: .
+    ports: 
+      - 8002:8002
+    depends_on:
+      - postgres
+  
+  postgres:
+    image: postgres:17
+    env_file:
+      - ./.env.docker
+    restart: "always"
+    environment:
+      TZ: "America/Fortaleza"
+      PGTZ: "America/Fortaleza"
+    ports:
+      - 5434:5432
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  postgres_data:

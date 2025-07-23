@@ -3,3 +3,4 @@
 __pycache__
 images/
 ideas.txt
+.env.docker

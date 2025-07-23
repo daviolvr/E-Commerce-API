@@ -1,7 +1,18 @@
 from django.contrib import admin
-from .models import Product, Category, Order, OrderProduct, Review, Cart, CartProduct, Shipping, Payment, Address
+from .models import (
+    Product,
+    Category,
+    Order,
+    OrderProduct,
+    Review,
+    Cart,
+    CartProduct,
+    Shipping,
+    Payment,
+    Address,
+)
 
-admin.site.site_header = 'E-Commerce Admin'
+admin.site.site_header = "E-Commerce Admin"
 admin.site.register(Product)
 admin.site.register(Category)
 admin.site.register(Order)

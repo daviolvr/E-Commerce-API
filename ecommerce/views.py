@@ -1,15 +1,46 @@
 from rest_framework.response import Response
 from django.contrib.auth.models import User
 from rest_framework import viewsets, status
-from .models import Product, Category, Order, OrderProduct, Review, Cart, CartProduct, Shipping, Payment, Address
-from .serializers import (UserSerializer, ProductSerializer, CategorySerializer, OrderSerializer, 
-                          OrderProductSerializer, ReviewSerializer, CartSerializer, CartProductSerializer,
-                          ShippingSerializer, PaymentSerializer, AddressSerializer)
+from .models import (
+    Product,
+    Category,
+    Order,
+    OrderProduct,
+    Review,
+    Cart,
+    CartProduct,
+    Shipping,
+    Payment,
+    Address,
+)
+from .serializers import (
+    UserSerializer,
+    ProductSerializer,
+    CategorySerializer,
+    OrderSerializer,
+    OrderProductSerializer,
+    ReviewSerializer,
+    CartSerializer,
+    CartProductSerializer,
+    ShippingSerializer,
+    PaymentSerializer,
+    AddressSerializer,
+)
 from drf_spectacular.utils import extend_schema_view, extend_schema
 from django_filters.rest_framework import DjangoFilterBackend
-from .filters import (UserFilter, ProductFilter, CategoryFilter, OrderFilter, 
-                      OrderProductFilter, ReviewFilter, CartFilter, CartProductFilter,
-                      ShippingFilter, PaymentFilter, AddressFilter)
+from .filters import (
+    UserFilter,
+    ProductFilter,
+    CategoryFilter,
+    OrderFilter,
+    OrderProductFilter,
+    ReviewFilter,
+    CartFilter,
+    CartProductFilter,
+    ShippingFilter,
+    PaymentFilter,
+    AddressFilter,
+)
 from rest_framework.permissions import IsAdminUser
 from .permissions import IsAdminOrReadOnly
 from .services.payment_service import PaymentService
@@ -18,10 +49,7 @@ from .services.orderproduct_service import OrderProductService
 
 
 @extend_schema_view(
-    create=extend_schema(
-        summary="Creates an user",
-        description="Creates a new user."
-    ),
+    create=extend_schema(summary="Creates an user", description="Creates a new user."),
     list=extend_schema(
         summary="List all users",
         description="Returns a list of all users in the system.",
@@ -39,14 +67,13 @@ from .services.orderproduct_service import OrderProductService
         description="Partially updates an user's details by its ID.",
     ),
     destroy=extend_schema(
-        summary="Delete an user", 
-        description="Deletes an user by its ID."
+        summary="Delete an user", description="Deletes an user by its ID."
     ),
 )
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    http_method_names = ['get', 'post', 'put', 'patch', 'delete']
+    http_method_names = ["get", "post", "put", "patch", "delete"]
     filter_backends = [DjangoFilterBackend]
     filterset_class = UserFilter
     permission_classes = [IsAdminUser]
@@ -74,14 +101,13 @@ class UserViewSet(viewsets.ModelViewSet):
         description="Partially updates a product by its ID",
     ),
     destroy=extend_schema(
-        summary="Delete a product",
-        description="Deletes a product by its ID."
+        summary="Delete a product", description="Deletes a product by its ID."
     ),
 )
 class ProductViewSet(viewsets.ModelViewSet):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
-    http_method_names = ['get', 'post', 'put', 'patch', 'delete']
+    http_method_names = ["get", "post", "put", "patch", "delete"]
     filter_backends = [DjangoFilterBackend]
     filterset_class = ProductFilter
     permission_classes = [IsAdminOrReadOnly]
@@ -109,18 +135,17 @@ class ProductViewSet(viewsets.ModelViewSet):
         description="Partially updates a category by its ID",
     ),
     destroy=extend_schema(
-        summary="Delete a category",
-        description="Deletes a category by its ID."
+        summary="Delete a category", description="Deletes a category by its ID."
     ),
 )
 class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
-    http_method_names = ['get', 'post', 'put', 'patch', 'delete']
+    http_method_names = ["get", "post", "put", "patch", "delete"]
     filter_backends = [DjangoFilterBackend]
     filterset_class = CategoryFilter
     permission_classes = [IsAdminOrReadOnly]
-    
+
 
 @extend_schema_view(
     create=extend_schema(
@@ -136,18 +161,17 @@ class CategoryViewSet(viewsets.ModelViewSet):
         description="Returns a order by ID.",
     ),
     destroy=extend_schema(
-        summary="Delete an order",
-        description="Deletes an order by its ID."
+        summary="Delete an order", description="Deletes an order by its ID."
     ),
 )
 class OrderViewSet(viewsets.ModelViewSet):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
-    http_method_names = ['get', 'post', 'delete']
+    http_method_names = ["get", "post", "delete"]
     filter_backends = [DjangoFilterBackend]
     filterset_class = OrderFilter
     permission_classes = [IsAdminUser]
-    
+
 
 @extend_schema_view(
     create=extend_schema(
@@ -164,13 +188,13 @@ class OrderViewSet(viewsets.ModelViewSet):
     ),
     destroy=extend_schema(
         summary="Delete an OrderProduct",
-        description="Deletes an OrderProduct by its ID."
+        description="Deletes an OrderProduct by its ID.",
     ),
 )
 class OrderProductViewSet(viewsets.ModelViewSet):
     queryset = OrderProduct.objects.all()
     serializer_class = OrderProductSerializer
-    http_method_names = ['get', 'post', 'delete']
+    http_method_names = ["get", "post", "delete"]
     filter_backends = [DjangoFilterBackend]
     filterset_class = OrderProductFilter
     permission_classes = [IsAdminUser]
@@ -180,18 +204,14 @@ class OrderProductViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(order_product)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-
     def destroy(self, request, *args, **kwargs):
-        order_product_id = kwargs.get('pk')
+        order_product_id = kwargs.get("pk")
         try:
             OrderProductService.remove_order_product(order_product_id)
             return Response(status=status.HTTP_204_NO_CONTENT)
         except ValueError as e:
-            return Response(
-                {"error": str(e)},
-                status=status.HTTP_400_BAD_REQUEST
-            )
-    
+            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
 
 @extend_schema_view(
     create=extend_schema(
@@ -207,14 +227,13 @@ class OrderProductViewSet(viewsets.ModelViewSet):
         description="Returns a category by ID.",
     ),
     destroy=extend_schema(
-        summary="Delete a category",
-        description="Deletes a category by its ID."
+        summary="Delete a category", description="Deletes a category by its ID."
     ),
 )
 class ReviewViewSet(viewsets.ModelViewSet):
     queryset = Review.objects.all()
     serializer_class = ReviewSerializer
-    http_method_names = ['get', 'post', 'delete']
+    http_method_names = ["get", "post", "delete"]
     filter_backends = [DjangoFilterBackend]
     filterset_class = ReviewFilter
     permission_classes = [IsAdminUser]
@@ -242,14 +261,13 @@ class ReviewViewSet(viewsets.ModelViewSet):
         description="Partially updates a cart by its ID",
     ),
     destroy=extend_schema(
-        summary="Delete a cart",
-        description="Deletes a cart by its ID."
+        summary="Delete a cart", description="Deletes a cart by its ID."
     ),
 )
 class CartViewSet(viewsets.ModelViewSet):
     queryset = Cart.objects.all()
     serializer_class = CartSerializer
-    http_method_names = ['get', 'post', 'put', 'patch', 'delete']
+    http_method_names = ["get", "post", "put", "patch", "delete"]
     filter_backends = [DjangoFilterBackend]
     filterset_class = CartFilter
     permission_classes = [IsAdminUser]
@@ -269,14 +287,13 @@ class CartViewSet(viewsets.ModelViewSet):
         description="Returns a CartProduct by ID.",
     ),
     destroy=extend_schema(
-        summary="Delete a CartProduct",
-        description="Deletes a CartProduct by its ID."
+        summary="Delete a CartProduct", description="Deletes a CartProduct by its ID."
     ),
 )
 class CartProductViewSet(viewsets.ModelViewSet):
     queryset = CartProduct.objects.all()
     serializer_class = CartProductSerializer
-    http_method_names = ['get', 'post', 'delete']
+    http_method_names = ["get", "post", "delete"]
     filter_backends = [DjangoFilterBackend]
     filterset_class = CartProductFilter
     permission_classes = [IsAdminUser]
@@ -304,14 +321,13 @@ class CartProductViewSet(viewsets.ModelViewSet):
         description="Partially updates a shipping by its ID",
     ),
     destroy=extend_schema(
-        summary="Delete a shipping",
-        description="Deletes a shipping by its ID."
+        summary="Delete a shipping", description="Deletes a shipping by its ID."
     ),
 )
 class ShippingViewSet(viewsets.ModelViewSet):
     queryset = Shipping.objects.all()
     serializer_class = ShippingSerializer
-    http_method_names = ['get', 'post', 'put', 'patch', 'delete']
+    http_method_names = ["get", "post", "put", "patch", "delete"]
     filter_backends = [DjangoFilterBackend]
     filterset_class = ShippingFilter
     permission_classes = [IsAdminUser]
@@ -343,14 +359,13 @@ class ShippingViewSet(viewsets.ModelViewSet):
         description="Partially updates a payment by its ID",
     ),
     destroy=extend_schema(
-        summary="Delete a payment",
-        description="Deletes a payment by its ID."
+        summary="Delete a payment", description="Deletes a payment by its ID."
     ),
 )
 class PaymentViewSet(viewsets.ModelViewSet):
     queryset = Payment.objects.all()
     serializer_class = PaymentSerializer
-    http_method_names = ['get', 'post', 'put', 'patch', 'delete']
+    http_method_names = ["get", "post", "put", "patch", "delete"]
     filter_backends = [DjangoFilterBackend]
     filterset_class = PaymentFilter
     permission_classes = [IsAdminUser]
@@ -382,14 +397,13 @@ class PaymentViewSet(viewsets.ModelViewSet):
         description="Partially updates a address by its ID",
     ),
     destroy=extend_schema(
-        summary="Delete a address",
-        description="Deletes a address by its ID."
+        summary="Delete a address", description="Deletes a address by its ID."
     ),
 )
 class AddressViewSet(viewsets.ModelViewSet):
     queryset = Address.objects.all()
     serializer_class = AddressSerializer
-    http_method_names = ['get', 'post', 'put', 'patch', 'delete']
+    http_method_names = ["get", "post", "put", "patch", "delete"]
     filter_backends = [DjangoFilterBackend]
     filterset_class = AddressFilter
     permission_classes = [IsAdminUser]
